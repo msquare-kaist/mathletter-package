@@ -8,7 +8,7 @@
 \RequirePackage{changepage}
 \RequirePackage{hyperref}
 \RequirePackage[a4paper, top=60mm, left=46mm, right=46mm, bottom=66mm]{geometry}
-\RequirePackage{xcolor}
+\RequirePackage[gray]{xcolor}
 \RequirePackage{setspace}
 \RequirePackage{keyval}
 \RequirePackage{environ}
@@ -23,19 +23,20 @@
 \ifXeTeX
     \RequirePackage{ulem}
 \fi
+\usepackage[backend=bibtex,style=numeric]{biblatex}
 
 \RequirePackage{graphicx}
 \RequirePackage{grffile}
 \RequirePackage{float}
 \RequirePackage[justification=centering]{caption}
 \RequirePackage[export]{adjustbox}
-\RequirePackage{subfigure}
+\RequirePackage{subcaption}
 
 \RequirePackage{tikz}
 \usetikzlibrary{calc, shapes}
 \RequirePackage{tikz-cd}
 \RequirePackage{pgfplots}
-\pgfplotsset{compat=1.14}
+\pgfplotsset{compat=1.15}
 
 \RequirePackage{amsmath}
 \RequirePackage{amssymb}
@@ -787,8 +788,9 @@
 
 % BIBLIOGRAPHY
 %%%%%
-\patchcmd{\thebibliography}{\chapter*}{\section*}{}{}
-\renewcommand{\bibname}{References}
+\def\PrintBibliography{%
+    \protect\printbibliography[heading=subbibliography,title=References]%
+}
 
 % MISC
 %%%%%
@@ -905,3 +907,6 @@
 
 \setcounter{issue}{0}
 \setcounter{page}{1} % Fallback counter
+
+\def\thesection{\arabic{section}}
+\def\thesubsection{\thesection.\arabic{subsection}}
