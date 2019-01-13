@@ -2,13 +2,24 @@
 
 \NeedsTeXFormat{LaTeX2e}[1994/06/01]
 
+\newif\ifcolorsupport
+\colorsupportfalse
+\DeclareOption{color}{
+    \colorsupporttrue
+}
+\ProcessOptions\relax
+
 % IMPORT PACKAGE
 %%%%%
 \RequirePackage{kotex}
 \RequirePackage{changepage}
-\RequirePackage{hyperref}
+\RequirePackage[hyperfootnotes=false]{hyperref}
 \RequirePackage[a4paper, top=60mm, left=46mm, right=46mm, bottom=66mm]{geometry}
-\RequirePackage[gray]{xcolor}
+\ifcolorsupport
+    \RequirePackage{xcolor}
+\else
+    \RequirePackage[gray]{xcolor}
+\fi
 \RequirePackage{setspace}
 \RequirePackage{keyval}
 \RequirePackage{environ}
@@ -36,12 +47,13 @@
 \usetikzlibrary{calc, shapes}
 \RequirePackage{tikz-cd}
 \RequirePackage{pgfplots}
-\pgfplotsset{compat=1.15}
+\pgfplotsset{compat=newest}
 
 \RequirePackage{amsmath}
 \RequirePackage{amssymb}
 \RequirePackage{amsfonts}
 \RequirePackage{enumitem}
+\RequirePackage{forloop}
 
 % DIMENSIONS
 %%%%%
@@ -251,6 +263,8 @@
 \renewcommand{\maketitle}[1][Articles]{%
     \iffontsetting\setfont\fi%
     \def\Category{#1}%
+    \def\bibname{References}%
+    \def\myenvnow{}%
     \setstretch{1.0}%
     \setlength\parskip{0ex}%
     \vbox{%
@@ -314,21 +328,19 @@
             Use another engines, such as XeLaTeX or LuaLaTeX.
         }
     \fi
-    \setsansfont{Source Han Sans K}[Scale=0.90]
-    \ifx가가
-    \setmainhangulfont{Source Han Serif K}
+    \setsansfont{Noto Sans CJK KR}[Scale=0.90]
+    \setmainhangulfont{Noto Serif CJK KR}
     \setmainhangulfont
         [ItalicFont={*},ItalicFeatures={FakeSlant=.167}]
-        {Source Han Serif K}
-    \setsanshangulfont[Scale=0.94]{Source Han Sans K}
+        {Noto Serif CJK KR}
+    \setsanshangulfont[Scale=0.94]{Noto Sans CJK KR}
     \setsanshangulfont
         [ItalicFont={*},ItalicFeatures={FakeSlant=.167}]
-        {Source Han Sans K}[Scale=0.94]
+        {Noto Sans CJK KR}[Scale=0.94]
     \setmonohangulfont{Noto Sans Mono CJK KR}
     \setmonohangulfont
         [ItalicFont={*},ItalicFeatures={FakeSlant=.167}]
         {Noto Sans Mono CJK KR}
-    \fi
 }
 
 % ENVIRONMENTS
@@ -347,7 +359,7 @@
 \newcounter{CnjCounter}
 
 % Paragraph environment
-\NewEnviron{MLPar}{%
+\newenvironment{MLPar}{%
     \begin{tcolorbox}[%
         breakable,%
         colback=white,%
@@ -361,8 +373,9 @@
         bottom=0pt,%
     ]%
         \parskip=0.7em
-        \BODY%
+}{%
     \end{tcolorbox}%
+    \ShowFootnotes%
     \biigskip%
 }
 
@@ -393,8 +406,9 @@
         \end{scope}
     \end{tikzpicture}%
 }
-\NewEnviron{MLQuo}[1][]{%
+\newenvironment{MLQuo}[1][]{%
     \def\myenvnow{인용}%
+    \def\QuoParam{#1}
     \begin{tcolorbox}[%
         breakable,%
         colback=white,%
@@ -421,13 +435,15 @@
             top=-1.2em,%
             bottom=0pt,%
         ]%
-            \itshape\BODY%
-            \ifthenelse{\equal{#1}{}}%
+            \itshape%
+}{%
+            \ifthenelse{\equal{\QuoParam}{}}%
                 {}%
-                {\endgraf\hfill--- #1}%
+                {\endgraf\hfill--- \QuoParam}%
         \end{tcolorbox}%
         \vspace*{-1.2em}\hfill\rotatebox[origin=c]{180}{\hspace{0.37cm}\QuotePic}%
     \end{tcolorbox}%
+    \ShowFootnotes%
     \biigskip%
 }
 
@@ -445,9 +461,9 @@
 \makeatother
 % Definition-like environment
 \makeatletter
-\NewEnviron{MLD@f}[1][]{%
+\newenvironment{MLD@f}[1][]{%
     \vspace*{\dimexpr-\baselineskip + 10pt}
-    \setkeys{MLEnvKeys}{env=정의,title={},#1}%
+    \setkeys{MLEnvKeys}{nonumbering=true,env=정의,title={},#1}%
     \vskip5.4mm
     \begin{tcolorbox}[%
         breakable,%
@@ -502,8 +518,9 @@
         arc=0pt,%
         outer arc=0pt,%
     ]%
-        \BODY%
+}{%
     \end{tcolorbox}%
+    \ShowFootnotes%
     \biigskip%
 }
 \newenvironment{MLDef}[1][]{%
@@ -514,7 +531,7 @@
         \stepcounter{DefCounter}%
         \setcounter{EnvCounter}{\value{DefCounter}}%
     \fi%
-    \MLD@f[title={{#1}}]%
+    \MLD@f[nonumbering=false,title={{#1}}]%
 }{%
     \endMLD@f%
 }%
@@ -531,7 +548,7 @@
         \stepcounter{AxmCounter}%
         \setcounter{EnvCounter}{\value{AxmCounter}}%
     \fi%
-    \MLD@f[env=공리,title={{#1}}]%
+    \MLD@f[env=공리,nonumbering=false,title={{#1}}]%
 }{%
     \endMLD@f%
 }%
@@ -542,9 +559,9 @@
 }%
 \makeatother
 % Theorem-like environment
-\NewEnviron{MLTLE}[1][]{%
+\newenvironment{MLTLE}[1][]{%
     \vspace*{\dimexpr-\baselineskip + 10pt}
-    \setkeys{MLEnvKeys}{nonumbering=false,env=분류없음,title={},#1}%
+    \setkeys{MLEnvKeys}{nonumbering=true,env=분류없음,title={},#1}%
     \hbox{\color{BasicGray}\rule{\dimexpr\textwidth}{3pt}}%
     \vskip-2.7mm\hskip2mm%
     \hbox{\color{BasicGray}\sffamily\textbf{\myenvnow\ifnumbering\ \arabic{EnvCounter}\fi}\hskip1.2em\mytitlenow}%
@@ -564,10 +581,11 @@
         top=0pt,%
         bottom=0pt,%
     ]%
-        \BODY%
+}{%
     \end{tcolorbox}%
     \vskip-1.5mm%
     \hbox{\color{BasicGray}\rule{\dimexpr\textwidth}{3pt}}%
+    \ShowFootnotes%
     \biigskip%
 }
 % Proposition environment
@@ -579,7 +597,7 @@
         \stepcounter{PrpCounter}
         \setcounter{EnvCounter}{\value{PrpCounter}}
     \fi
-    \MLTLE[env=성질,title={{#1}}]%
+    \MLTLE[nonumbering=false,env=성질,title={{#1}}]%
 }{%
     \endMLTLE%
 }%
@@ -598,7 +616,7 @@
         \stepcounter{ThmCounter}
         \setcounter{EnvCounter}{\value{ThmCounter}}
     \fi
-    \MLTLE[env=정리,title={{#1}}]%
+    \MLTLE[nonumbering=false,env=정리,title={{#1}}]%
 }{%
     \endMLTLE%
 }%
@@ -617,7 +635,7 @@
         \stepcounter{LemCounter}
         \setcounter{EnvCounter}{\value{LemCounter}}
     \fi
-    \MLTLE[env=보조정리,title={{#1}}]%
+    \MLTLE[nonumbering=false,env=보조정리,title={{#1}}]%
 }{%
     \endMLTLE%
 }%
@@ -636,7 +654,7 @@
         \stepcounter{CorCounter}
         \setcounter{EnvCounter}{\value{CorCounter}}
     \fi
-    \MLTLE[env=따름정리,title={{#1}}]%
+    \MLTLE[nonumbering=false,env=따름정리,title={{#1}}]%
 }{%
     \endMLTLE%
 }%
@@ -655,7 +673,7 @@
         \stepcounter{CnjCounter}
         \setcounter{EnvCounter}{\value{CnjCounter}}
     \fi
-    \MLTLE[env=추측,title={{#1}}]%
+    \MLTLE[nonumbering=false,env=추측,title={{#1}}]%
 }{%
     \endMLTLE%
 }%
@@ -666,7 +684,7 @@
     \endMLTLE%
 }%
 % Proof environment
-\NewEnviron{MLPrf}[1][증명]{%
+\newenvironment{MLPrf}[1][증명]{%
     \begin{tcolorbox}[%
         breakable,%
         colback=white,%
@@ -692,9 +710,11 @@
             \small\color{white}\textbs{#1}%
         \end{tcolorbox}}
         \parskip=0.7em
-        \BODY\hfill$\square$%
+}{%
+    \hfill$\square$%
     \end{tcolorbox}%
     \vskip2mm
+    \ShowFootnotes%
     \biigskip%
 }
 % Solution environment
@@ -708,18 +728,25 @@
 %%%%%
 \cleardoublepage\phantomsection
 \makeatletter
-\NewDocumentCommand{\lbl}{s m o}{%
-    \IfValueTF{#3}{%
-        \IfBooleanTF{#1}{%
-            \hypertarget{#2}{}\protected@write\@auxout{}{\string\newlabel{#2}{{\textbs{#3}}{\thepage}{\textbs{#3}}{#2}{}}}%
+\newcommand*\lbl{\Label}
+\NewDocumentCommand{\Label}{s m o}{%
+    \ifthenelse{\equal{\myenvnow}{} \OR \equal{\myenvnow}{인용}}{%
+        \ifthenelse{\equal{\myenvnow}{}}{%
+            \label{#2}%
+        }{}%
+    }{
+        \IfValueTF{#3}{%
+            \IfBooleanTF{#1}{%
+                \hypertarget{#2}{}\protected@write\@auxout{}{\string\newlabel{#2}{{\textbs{#3}}{\thepage}{\textbs{#3}}{#2}{}}}%
+            }{%
+                \hypertarget{#2}{}\protected@write\@auxout{}{\string\newlabel{#2}{{\textbs{\myenvnow~\arabic{EnvCounter}}~\textsf{#3}}{\thepage}{\textbs{\myenvnow~\arabic{EnvCounter}}~\textsf{#3}}{#2}{}}}%
+            }%
         }{%
-            \hypertarget{#2}{}\protected@write\@auxout{}{\string\newlabel{#2}{{\textbs{\myenvnow~\arabic{EnvCounter}}~\textsf{#3}}{\thepage}{\textbs{\myenvnow~\arabic{EnvCounter}}~\textsf{#3}}{#2}{}}}%
-        }%
-    }{%
-        \IfBooleanTF{#1}{%
-            \hypertarget{#2}{}\protected@write\@auxout{}{\string\newlabel{#2}{{\textbs{\myenvnow}}{\thepage}{\textbs{\myenvnow}}{#2}{}}}%
-        }{%
-            \hypertarget{#2}{}\protected@write\@auxout{}{\string\newlabel{#2}{{\textbs{\myenvnow~\arabic{EnvCounter}}}{\thepage}{\textbs{\myenvnow~\arabic{EnvCounter}}}{#2}{}}}%
+            \IfBooleanTF{#1}{%
+                \hypertarget{#2}{}\protected@write\@auxout{}{\string\newlabel{#2}{{\textbs{\myenvnow}}{\thepage}{\textbs{\myenvnow}}{#2}{}}}%
+            }{%
+                \hypertarget{#2}{}\protected@write\@auxout{}{\string\newlabel{#2}{{\textbs{\myenvnow~\arabic{EnvCounter}}}{\thepage}{\textbs{\myenvnow~\arabic{EnvCounter}}}{#2}{}}}%
+            }%
         }%
     }%
 }
@@ -790,6 +817,23 @@
 %%%%%
 \def\PrintBibliography{%
     \protect\printbibliography[heading=subbibliography,title=References]%
+}
+\patchcmd{\thebibliography}{\chapter*}{\section*}{}{}
+\def\bibname{References}
+
+% FOOTNOTES
+%%%%%
+\newcounter{FootnoteLength}
+\newcounter{FootnoteIterator}
+\def\Footnote#1{%
+    \stepcounter{FootnoteLength}%
+    \footnotemark%
+    \expandafter\global\expandafter\def\csname MLFootnote\theFootnoteLength\endcsname{{#1}}%
+}
+\def\ShowFootnotes{%
+    \stepcounter{FootnoteLength}%
+    \forloop{FootnoteIterator}{1}{\value{FootnoteIterator} < \value{FootnoteLength}}{\footnotetext{\csname MLFootnote\arabic{FootnoteIterator}\endcsname}}%
+    \setcounter{FootnoteLength}{0}%
 }
 
 % MISC
