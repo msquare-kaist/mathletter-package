@@ -323,9 +323,9 @@
 \def\setfont{
     \ifPDFTeX
         \PackageError{MathLetter}{%
-            PDFTeX is not allowed for setting fonts!
+            PDFTeX is not allowed to set fonts!
         }{%
-            Use another engines, such as XeLaTeX or LuaLaTeX.
+            Use another engine, such as XeLaTeX or LuaLaTeX.
         }
     \fi
     \setsansfont{Noto Sans CJK KR}[Scale=0.90]
