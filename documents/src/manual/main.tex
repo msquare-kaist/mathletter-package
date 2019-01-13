@@ -1,0 +1,289 @@
+% !TeX program = lualatex
+% LuaLaTeX is recommended
+
+\documentclass[11pt,a4paper]{book}
+\usepackage[color]{MathLetter}
+\usepackage{minted}
+\AtBeginEnvironment{minted}{\singlespacing\fontsize{11}{12.5}\selectfont}
+\setminted[latex]{xleftmargin=30pt,breaklines=true,linenos=true,breaksymbolleft={}}
+\usemintedstyle{manni}
+\setminted{bgcolor=white!95!black}
+% minted에 LaTeX 코드가 들어가면 생기는 에러 메시지를 제거
+\makeatletter
+\global\let\tikz@ensure@dollar@catcode=\relax
+\makeatother
+\usepackage{tcolorbox}
+\usepackage{metalogo}
+% \usepackage{lua-visual-debug}
+
+\newcommand{\onelineterminal}[1]{
+    \vspace{-\biigskipamount}
+    \begin{figure}[H]
+        \begin{tcolorbox}[colframe=black,colback=black,left=6pt,right=6pt,top=5pt,bottom=5pt]
+            \textcolor{white}{\texttt{#1}}
+        \end{tcolorbox}
+    \end{figure}
+}
+\newcommand{\button}[1]{%
+    \tikz[baseline=-0.5ex]\draw[#1,radius=.31em] (0,0) circle;%
+}%
+\definecolor{nicered}{HTML}{FF5F56}
+\definecolor{niceyellow}{HTML}{FFBD2E}
+\definecolor{nicegreen}{HTML}{27C93F}
+\newcommand*{\terminal}[1]{%
+    \vspace{-\biigskipamount}
+    \begin{figure}[H]
+        \begin{tcolorbox}[colframe=black,colback=black,left=6pt,right=6pt,top=5pt,bottom=5pt]
+            \button{nicered,fill=nicered}\kern.5em\button{niceyellow,fill=niceyellow}\kern.5em\button{nicegreen,fill=nicegreen}
+            \vskip.5em
+            \color{white}
+            #1
+        \end{tcolorbox}
+    \end{figure}
+}
+
+\newenvironment{code}{%
+    \begin{tcolorbox}[%
+        breakable,%
+        colframe=white,%
+        colback=white!95!black,%
+        boxrule=0pt,%
+        width=\textwidth,%
+        boxsep=.5em,%
+        left=0em,%
+        right=0pt,%
+        top=0pt,%
+        bottom=0pt,%
+        arc=4pt,%
+        outer arc=0pt,%
+    ]%
+}{%
+    \end{tcolorbox}%
+}
+
+
+%%% FONT SETTING
+\fontsettingtrue % If you want to set the font (default)
+% \fontsettingfalse % If you do not want to set the font
+
+%%% COUNTER SETTING
+\mergedcountertrue % If you want to merge all the theorem counters
+% \mergedcounterfalse % If you do not want to merge all the theorem counters (default)
+
+\setcounter{issue}{0} % 몇 호?
+\setcounter{page}{1} % 몇 페이지부터?
+
+\title{\MSquare\ \texttt{MathLetter.sty} 매뉴얼}
+\author{KAIST 30기 ML편집부장}
+\date{\today}
+
+\begin{document}
+\maketitle[Manual]
+
+\section{감사드립니다}
+\Label{sec:thanks}
+
+\Picture{thanks.png}[width=.2\textwidth,center][label=fig:chiffon,caption={아티클 작성 및 편집에 무한한 감사를 표하는 쉬폰}]
+
+\begin{MLPar}
+    좋은 아티클을 써주시는 여러분들께 감사드립니다. 이 문서는 아티클을 쓰는 데 필요한 \texttt{MathLetter.sty}의 사용법을 열거합니다.
+\end{MLPar}
+
+
+\section{패키지 파일 다운로드}
+\Label{sec:download}
+
+\begin{MLPar}
+    KAIST 수학문제연구회의 \texttt{mathletter-package} 리포지터리 (\url{https://github.com/msquare-kaist/mathletter-package})에서 \texttt{MathLetter .sty}를 받아주세요. 아티클을 한 번만 작성할 예정이라면, \texttt{.tex} 파일과 같은 디렉토리에 \texttt{.sty} 파일을 넣어주세요. 앞으로도 아티클을 계속 작성할 예정이라 \texttt{.sty} 파일을 일일이 넣지 않고 싶으시면, 터미널 (Windows의 경우엔 \texttt{cmd})을 열어, 다음 명령어를 입력해주세요.
+\end{MLPar}
+
+\onelineterminal{kpsewhich -var-value=TEXMFHOME}
+
+\begin{MLPar}
+    그리고 이 하위에 \texttt{./tex/latex/commonstuff/MathLetter.sty}의 경로에 \texttt{.sty} 파일을 넣어주세요. 예를 들어,
+\end{MLPar}
+
+\terminal{%
+    \textcolor{white!80!black}{\texttt{C:\char`\\Users\char`\\MSquare> }}%
+    \textbf{\texttt{kpsewhich -var-value=TEXMFHOME}}\\
+    \textbf{\texttt{C:/Users/MSquare/texmf}}
+}
+
+\begin{MLPar}
+    라는 결과를 얻었다면,
+
+    \texttt{C:\char`\\Users\char`\\MSquare\char`\\texmf\char`\\tex\char`\\latex\char`\\commonstuff\char`\\MathLetter.sty}
+
+    에 파일을 놓으면 됩니다. 이제 \texttt{.tex} 파일이 어디 있든지 \LaTeX\ 컴파일러가 알아서 패키지를 찾아줄 거예요.
+\end{MLPar}
+
+
+\section{전처리부 (Preamble)}
+\Label{sec:preamble}
+
+\begin{MLPar}
+    Math Letter 아티클을 쓸 때에는 다음과 같은 형식을 따릅니다.
+\end{MLPar}
+\vspace*{-\biigskipamount}
+\begin{minted}{latex}
+% !TeX program = lualatex
+
+\documentclass[11pt,a4paper]{book}
+\usepackage{MathLetter}
+% \usepackage{...}
+
+\fontsettingtrue
+% \fontsettingfalse
+
+\mergedcountertrue
+% \mergedcounterfalse
+
+\setcounter{issue}{0}
+\setcounter{page}{1}
+
+\title{제목}
+\author{소속 및 이름}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+% ...
+
+\end{document}
+\end{minted}
+
+\begin{MLPar}
+    각 줄에 대한 설명:
+    \begin{itemize}[align=parleft,labelwidth=\widthof{\sf Line 00--00},leftmargin=0pt]
+        \item[\sf Line 1] \TeX 조판 엔진은 \LuaLaTeX을 추천하며, \XeLaTeX\ 역시 사용 가능합니다. pdf\LaTeX의 경우에는 \texttt{\char`\\fontsettingfalse}인 상태에서만 조판이 가능하고, 그 외에는 \texttt{PDFTeX is not allowed for setting fonts!} 에러를 띄웁니다.
+        \item[\sf Line 4--5] \S\ref{sec:download}에서 다운로드한 패키지를 로드합니다. 추가로 다른 패키지를 로드할 수 있습니다. 불러올 필요가 없는 패키지들의 리스트는 아래에 있습니다.
+        \item[\sf Line 7--8] 폰트를 적용할지 말지 결정합니다. 폰트를 적용하려면 \texttt{Noto \{Sans, Serif\} CJK KR}이 설치되어 있어야 하고, \LuaLaTeX이나 \XeLaTeX을 써야 합니다.
+        \item[\sf Line 10--11] 정의, 정리, 성질 등 번호를 모두 합하여 차례대로 붙일지, 정의는 정의끼리, 정리는 정리끼리 같은 종류만을 모아 넘버링 할지 결정합니다.
+        \item[\sf Line 13] 호수(號數)를 정의합니다.
+        \item[\sf Line 14] 시작 페이지를 정의합니다.
+        \item[\sf Line 21] 제목 헤더를 만듭니다. 이때 \begin{code}
+            \mintinline[escapeinside=||]{latex}{\maketitle[|\textit{category}|]}
+        \end{code}와 같이 optional한 인자 \texttt{\textit{category}}를 주면, 오른쪽 끝에 있는 검은 상자 안의 흰 글씨를 바꿀 수 있습니다. 기본값은 \textbs{Articles}입니다.
+    \end{itemize}
+
+    아래는 \texttt{MathLetter.sty}를 가져오면 따라오는 패키지의 목록입니다.
+
+    \texttt{adjustbox, amsfonts, amsmath, amssymb, biblatex, caption,\\ changepage, enumitem, environ, etoolbox, fancyhdr, float,\\ forloop, geometry, grffile, hyperref, iftex, keyval,\\ kotex, pgfplots, setspace, subcaption, tcolorbox, tikz,\\ tikz-cd, titlesec, ulem$^\dagger$, xcolor$^\ddagger$, xifthen, xparse}
+
+    {
+        \small
+        \begin{itemize}[leftmargin=0pt]
+            \item[$^\dagger$] \XeLaTeX인 경우에만 불러오며, \LuaLaTeX은 \texttt{ulem}을 불러올 필요가 없습니다.
+            \item[$^\ddagger$] 패키지에 \texttt{color} 옵션을 주지 않으면 기본적으로 (Math Letter는 흑백 인쇄이므로) \texttt{xcolor}에 \texttt{gray} 옵션을 넣습니다.
+        \end{itemize}
+    }
+\end{MLPar}
+
+
+\section{문단과 환경 (Paragraphs and Environments)}
+\Label{sec:parenv}
+
+\begin{MLPar}
+    \texttt{MathLetter.sty}는 다음과 같은 환경들을 제공하고 있습니다.
+
+    \texttt{MLPar, MLQuo, MLDef(*), MLAxm(*), MLPrp(*), MLThm(*),\\ MLLem(*), MLCor(*), MLCnj(*), MLPrf, MLSol}
+
+    각각 문단, 인용, 정의, 공리, 성질, 정리, 보조정리, 따름정리, 추측, 증명, 풀이를 나타냅니다. 이 환경들은 중첩되지(nested) 않는 것을 가정으로 만들어졌으며, 중첩될 시 원하는 대로 출력되지 않을 수 있습니다. 연속된 \texttt{MLPar}는 하나로 합친 후 빈 줄을 넣어 문단을 만들어 주세요.
+
+    사용자 정의 환경을 만들 수도 있습니다. \S\ref{sec:customenv}를 참고해 주세요.
+\end{MLPar}
+
+
+\section{레이블 (Labels)}
+\Label{sec:label}
+
+\begin{MLPar}
+    \texttt{\char`\\Label}을 이용하여 레이블을 정의하고, \texttt{\char`\\ref}을 이용하여 참조합니다.
+
+    \begin{code}
+        \mintinline[escapeinside=||]{latex}{\Label(*){|\textit{label\_name}|}[|\textit{optional\_argument}|]}
+        \mintinline[escapeinside=||]{latex}{\ref{|\textit{label\_name}|}}
+    \end{code}
+
+    이때, 레이블 이름 \texttt{\textit{label\_name}}은 `\texttt{env:name}'의 형식을 따르면 좋습니다. 이때 \texttt{env}에는 그 레이블이 가리키는 것이 무엇인지를 넣습니다. 예를 들어, 섹션(section)이라면 \texttt{sec}을, 그림이라면 \texttt{fig}을, 정리라면 \texttt{thm}을, 그외 \texttt{ML***}이라면 \texttt{***}에 해당하는 것을 넣으면 됩니다.\Footnote{단, \texttt{MLQuo}을 가리키는 레이블을 만들 시 무시됩니다.} 이는 반드시 지킬 필요는 없지만, 가독성을 위해서 지키는 편이 좋습니다.
+
+    그 뒤 \texttt{\textit{optional\_argument}}는 다음과 같이 동작합니다.
+
+    \begin{itemize}[leftmargin=0pt]
+        \item \mintinline{latex}{\Label{env:title}}: \textsf{\textbf{* 없이 정의된 environment}}에서
+        번호 있는 레이블을 만듭니다.
+        \item \mintinline{latex}{\Label*{env:title}}: 정의된 environment의 종류만을 출력하는
+        번호 없는 레이블을 만듭니다.
+        \item \mintinline[escapeinside=||]{latex}{\Label{env:title}[|\textit{option}|]}: 정의된 environment와 \texttt{\textit{option}}을 출력하는 번호 없는 레이블을 만듭니다.
+        \item \mintinline[escapeinside=||]{latex}{\Label*{env:title}[|\textit{option}|]}: \texttt{\textit{option}}을
+        출력하는 번호 없는 레이블을 만듭니다.
+    \end{itemize}
+\end{MLPar}
+
+
+\section{그림 (Pictures)}
+\Label{sec:picture}
+
+\begin{MLPar}
+    문서에 \texttt{\char`\\Picture}를 이용하여 이미지를 넣습니다.
+
+    \begin{code}
+        \mintinline[escapeinside=||]{latex}{\Picture(*){|\textit{file\_path}|}[|\textit{options\_i}|][|\textit{options\_ii}|]}
+    \end{code} 
+
+    \textit{\texttt{options\_(i|ii)}}는 다음과 같이 동작합니다.
+
+    \begin{itemize}[leftmargin=0pt]
+        \item \mintinline{latex}{options_i}: \mintinline{latex}{\includegraphics}에 들어가는 optional한 인자를 넣습니다. 예를 들어, \mintinline{latex}{width=.2\textwidth,center}와 같이, \texttt{height}, \texttt{totalheight}, \texttt{width}, \texttt{scale}, \texttt{angle}, \texttt{origin}, \texttt{bb}, 그리고 \texttt{adjustbox} 패키지에 의해서 정의되는 여러 가지 옵션들\Footnote{\texttt{left}, \texttt{center}, \texttt{right} 등, \url{https://ctan.org/tex-archive/macros/latex/contrib/adjustbox} 참고.}을 넣을 수 있습니다.
+        \item \mintinline{latex}{options_ii}: \texttt{label} 인자와 \texttt{caption} 인자를 받습니다. 각 인자의 값은 \texttt{\{\}}로 감싸 주는 것이 안전합니다.
+
+        \begin{code}
+            \mintinline[escapeinside=||]{latex}{label={fig:nicefigure},caption={좋은 그림}}
+        \end{code} 
+    \end{itemize}
+\end{MLPar}
+
+
+\section{각주 (Footnotes)}
+\Label{sec:footnote}
+
+\begin{MLPar}
+    \LaTeX\ 기존의 명령어 \mintinline{latex}{\footnote{...}} 대신 \mintinline{latex}{\Footnote{...}}를 사용합니다. 이는 특정 environment에서 각주가 페이지 밑이 아닌 해당 environment 밑에 달리는 것을 방지하기 위함입니다.
+\end{MLPar}
+
+
+\section{사용자 정의 환경 (Custom Environments)}
+\Label{sec:customenv}
+
+\begin{MLPar}
+    \texttt{MathLetter.sty}는 위에 열거된 환경들과 같은 디자인을 가진 환경을 자유롭게 만들 수 있는 명령어를 가지고 있습니다. 특별한 경우가 아니면, 쓰지 않는 것을 추천합니다.
+
+    정리 환경과 같은 디자인을 가지는 환경들은 \texttt{MLTLE} (theorem-like environments)으로 정의되어 있고, 정의 환경과 같은 디자인을 가지는 환경들은 \texttt{MLD@f}으로 정의되어 있습니다. 아래 코드를 이용하여 새로운 환경을 만들 수 있습니다. (아래 예시는 numbering을 하지 않고 `SoTA'라고 표시되는 정의 환경 \texttt{MLCustomEnvironment}을 만듭니다.)
+\end{MLPar}
+\vspace*{-\biigskipamount}
+\begin{minted}{latex}
+\makeatletter% @을 명령어로 사용하기 위함입니다.
+\newenvironment{MLCustomEnvironment}[1][]{%
+    \MLD@f[env=SoTA,nonumbering=true,title={{#1}}]%
+}{%
+    \endMLD@f%
+}%
+\makeatother% @을 다시 active character로 되돌립니다.
+\end{minted}
+
+
+\section{Concerning Typographical Issues}
+\Label{sec:typoissue}
+
+\LaTeX\ 수식을 더 예쁘고 분명하게 사용하기 위해서 지켜야 할 규칙이 몇몇 있습니다. 같은 폴더에 있는 \texttt{prettify.pdf}를 참고해 주시면, 편집부가 일을 덜 할 수 있게 됩니다. 매우 감사드립니다.
+
+
+
+\begin{thebibliography}{9}
+    \bibitem{hmp2015}
+    Hun Min Park, \textit{Simple ml\_2015.sty manual} (2015).
+    \bibitem{msq2016}
+    KAIST \MSquare, \textit{수학문제연구회 회칙} (2016).
+\end{thebibliography}
+\end{document}

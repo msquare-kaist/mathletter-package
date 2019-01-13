@@ -1,0 +1,10 @@
+{
+    "latex-workshop.latex.magic.args": [
+        "-synctex=1",
+        "-interaction=nonstopmode",
+        "-shell-escape",
+        "-file-line-error",
+        "%DOC%"
+    ],
+    "editor.fontSize": 13
+}

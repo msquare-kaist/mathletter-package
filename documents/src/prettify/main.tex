@@ -1,0 +1,960 @@
+% !TeX program = lualatex
+
+\documentclass[11pt,a4paper]{book}
+\usepackage[color]{MathLetter}
+\usepackage{mathtools}
+\usepackage{longtable}
+\usepackage{scalerel}
+
+%%% FONT SETTING
+\fontsettingtrue % If you want to set the font (default)
+% \fontsettingfalse % If you do not want to set the font
+
+%%% COUNTER SETTING
+\mergedcountertrue % If you want to merge all the theorem counters
+% \mergedcounterfalse % If you do not want to merge all the theorem counters (default)
+
+\setcounter{issue}{0} % 몇 호?
+\setcounter{page}{1} % 몇 페이지부터?
+
+\title{몇 가지 타이포그래피적인 이슈}
+\author{\MSquare[9/10] 수문연 30기 편집부장}
+\date{\today}
+
+\usepackage{minted}
+\AtBeginEnvironment{minted}{\singlespacing\fontsize{10}{11.5}\selectfont}
+\usemintedstyle{manni}
+% minted에 LaTeX 코드가 들어가면 생기는 에러 메시지를 제거
+\makeatletter
+\global\let\tikz@ensure@dollar@catcode=\relax
+\makeatother
+\usepackage{tcolorbox}
+\usepackage{metalogo}
+% \usepackage{lua-visual-debug}
+
+\catcode`\·=13 \def\cdottext{\ensuremath\cdot} \let·\cdottext
+
+\newlength\w
+\setlength\w{\dimexpr .7\textwidth -4pt}
+\newcommand{\oneline}[1]{%
+    \begin{tcolorbox}[colframe=white!95!black,colback=white!95!black,left=2pt,right=2pt,top=1pt,bottom=1pt,width=\dimexpr\w-4pt\relax]%
+        #1%
+    \end{tcolorbox}%
+}
+\protected\def\myphantomph{\vphantom{ph}}
+\newcommand{\code}[1]{%
+    \begingroup\setlength{\fboxsep}{2pt}% no padding
+    \colorbox{white!95!black}{#1{\myphantomph}}%
+    \endgroup
+}
+\definecolor{docolor}{HTML}{49AE4D}
+\definecolor{dontcolor}{HTML}{F5422C}
+\definecolor{shadowcolor}{HTML}{6DA2F6}
+\long\def\dothis#1->#2\but#3->#4\end{%
+    \vskip\biigskipamount%
+    \setlength\LTleft{\dimexpr-.2\textwidth}%
+    \hspace*{\dimexpr-.2\textwidth}\begin{longtable}{@{}p{1.4\textwidth}@{}}%
+        \begin{minipage}[b]{.7\textwidth}%
+            \leftskip2pt\oneline{\vspace*{-1em}#1}\end{minipage}%
+        \begin{minipage}[b]{.7\textwidth}%
+            \leftskip2pt\oneline{\vspace*{-1em}#3}\end{minipage}%
+        \\[-4pt]%
+        {\color{white!90!black}%
+            \begin{minipage}[b]{.7\textwidth}%
+                \leftskip12pt\rule{\dimexpr \textwidth - 28pt}{.2pt}%
+            \end{minipage}%
+            \begin{minipage}[b]{.7\textwidth}%
+                \leftskip12pt\rule{\dimexpr \textwidth - 28pt}{.2pt}%
+            \end{minipage}%
+        }\\[6pt]%
+        \begin{minipage}[b]{.7\textwidth}%
+            \leftskip4pt\rightskip4pt#2\end{minipage}%
+        \begin{minipage}[b]{.7\textwidth}%
+            \leftskip4pt\rightskip4pt#4\end{minipage}%
+        \\[4pt]%
+        \begin{minipage}[b]{.7\textwidth}\color{docolor}%
+            \leftskip4pt\rule{\dimexpr \textwidth - 12pt}{.6em}%
+        \end{minipage}%
+        \begin{minipage}[b]{.7\textwidth}\color{dontcolor}%
+            \leftskip4pt\rule{\dimexpr \textwidth - 12pt}{.6em}%
+        \end{minipage}%
+        \\%
+        \begin{minipage}[b]{.7\textwidth}\color{docolor}%
+            \leftskip4pt\sf Do.\end{minipage}%
+        \begin{minipage}[b]{.7\textwidth}\color{dontcolor}%
+            \leftskip4pt\sf Don't.\end{minipage}%
+    \end{longtable}%
+    \vskip\biggskipamount%
+}
+\long\def\dothisok#1->#2\or#3->#4\end{%
+    \vskip\biigskipamount%
+    \setlength\LTleft{\dimexpr-.2\textwidth}%
+    \hspace*{\dimexpr-.2\textwidth}\begin{longtable}{@{}p{1.4\textwidth}@{}}%
+        \begin{minipage}[b]{.7\textwidth}%
+            \leftskip2pt\oneline{\vspace*{-1em}#1}\end{minipage}%
+        \begin{minipage}[b]{.7\textwidth}%
+            \leftskip2pt\oneline{\vspace*{-1em}#3}\end{minipage}%
+        \\[-4pt]%
+        {\color{white!90!black}%
+            \begin{minipage}[b]{.7\textwidth}%
+                \leftskip12pt\rule{\dimexpr \textwidth - 28pt}{.2pt}%
+            \end{minipage}%
+            \begin{minipage}[b]{.7\textwidth}%
+                \leftskip12pt\rule{\dimexpr \textwidth - 28pt}{.2pt}%
+            \end{minipage}%
+        }\\[6pt]%
+        \begin{minipage}[b]{.7\textwidth}%
+            \leftskip4pt\rightskip4pt#2\end{minipage}%
+        \begin{minipage}[b]{.7\textwidth}%
+            \leftskip4pt\rightskip4pt#4\end{minipage}%
+        \\[4pt]%
+        \begin{minipage}[b]{.7\textwidth}\color{docolor}%
+            \leftskip4pt\rule{\dimexpr \textwidth - 12pt}{.6em}%
+        \end{minipage}%
+        \begin{minipage}[b]{.7\textwidth}\color{docolor}%
+            \leftskip4pt\rule{\dimexpr \textwidth - 12pt}{.6em}%
+        \end{minipage}%
+        \\%
+        \begin{minipage}[b]{.7\textwidth}\color{docolor}%
+            \leftskip4pt\sf Do.\end{minipage}%
+        \begin{minipage}[b]{.7\textwidth}\color{docolor}%
+            \leftskip4pt\sf OK.\end{minipage}%
+    \end{longtable}%
+    \vskip\biggskipamount%
+}
+\long\def\dothisnoex#1\but#2\end{%
+    \vskip\biigskipamount%
+    \setlength\LTleft{\dimexpr-.2\textwidth}%
+    \hspace*{\dimexpr-.2\textwidth}\begin{longtable}{@{}p{1.4\textwidth}@{}}%
+        \begin{minipage}[b]{.7\textwidth}%
+            \leftskip2pt\oneline{\vspace*{-1em}#1}\end{minipage}%
+        \begin{minipage}[b]{.7\textwidth}%
+            \leftskip2pt\oneline{\vspace*{-1em}#2}\end{minipage}%
+        \\[-4pt]%
+        \begin{minipage}[b]{.7\textwidth}\color{docolor}%
+            \leftskip4pt\rule{\dimexpr \textwidth - 12pt}{.6em}%
+        \end{minipage}%
+        \begin{minipage}[b]{.7\textwidth}\color{dontcolor}%
+            \leftskip4pt\rule{\dimexpr \textwidth - 12pt}{.6em}%
+        \end{minipage}%
+        \\%
+        \begin{minipage}[b]{.7\textwidth}\color{docolor}%
+            \leftskip4pt\sf Do.\end{minipage}%
+        \begin{minipage}[b]{.7\textwidth}\color{dontcolor}%
+            \leftskip4pt\sf Don't.\end{minipage}%
+    \end{longtable}%
+    \vskip\biggskipamount%
+}
+\newsavebox{\dobox}
+\newsavebox{\dontbox}
+\newsavebox{\ibox}
+\newsavebox{\iibox}
+
+\begin{document}
+\maketitle[Manual]
+
+
+\section{자간 조정 (Kerning)}
+\subsection{\texttt{\char`\\mathbin}, \texttt{\char`\\mathrel}, \texttt{\char`\\mathord}}
+
+이항연산자의 경우에는 \code{\texttt{\char`\\mathbin}}을 씁니다.
+
+\begin{lrbox}{\dobox}
+\begin{minipage}{.7\textwidth}
+\begin{minted}{latex}
+$a \mathbin{
+    \rlap{\raisebox{1pt}{\cup}}
+    \raisebox{-1pt}{\cap}} b$
+\end{minted}
+\end{minipage}
+\end{lrbox}
+
+\begin{lrbox}{\dontbox}
+\begin{minipage}{.7\textwidth}
+\begin{minted}{latex}
+$a \mathrel{
+    \rlap{\raisebox{1pt}{\cup}}
+    \raisebox{-1pt}{\cap}} b$ \\
+$a \mathord{
+    \rlap{\raisebox{1pt}{\cup}}
+    \raisebox{-1pt}{\cap}} b$
+\end{minted}
+\end{minipage}
+\end{lrbox}
+
+\def\strangesymbol{\rlap{\raisebox{1pt}{\cup}}\raisebox{-1pt}{\cap}}
+\dothis \usebox{\dobox}
+    ->  $a\mathbin{\strangesymbol}b$
+\but \usebox{\dontbox}
+    ->  $\mathrlap
+            {\color{white!50!shadowcolor}a \mathbin{\strangesymbol} b}
+            {a \mathrel{\strangesymbol} b}$ \\
+        $\mathrlap
+            {\color{white!50!shadowcolor}a \mathbin{\strangesymbol} b}
+            {a \mathord{\strangesymbol} b}$
+\end
+
+\newpage
+
+관계의 경우에는 \code{\texttt{\char`\\mathrel}}을 씁니다.
+
+\begin{lrbox}{\dobox}
+\begin{minipage}{.7\textwidth}
+\begin{minted}{latex}
+$F\mathrel{\sim}\mathcal{D}$
+\end{minted}
+\end{minipage}
+\end{lrbox}
+
+\begin{lrbox}{\dontbox}
+\begin{minipage}{.7\textwidth}
+\begin{minted}{latex}
+$F\mathbin{\sim}\mathcal{D}$ \\
+$F\mathord{\sim}\mathcal{D}$
+\end{minted}
+\end{minipage}
+\end{lrbox}
+
+\dothis \usebox{\dobox}
+    ->  $F\mathrel{\sim}\mathcal{D}$
+\but \usebox{\dontbox}
+    ->  $\mathrlap
+            {\color{white!50!shadowcolor}F\mathrel{\sim}\mathcal{D}}
+            {F\mathbin{\sim}\mathcal{D}}$ \\
+        $\mathrlap
+            {\color{white!50!shadowcolor}F\mathrel{\sim}\mathcal{D}}
+            {F\mathord{\sim}\mathcal{D}}$
+\end
+
+기본적으로 연산자이거나 관계인 문자를 두 문자 사이가 아닌 곳에 쓰고 싶다면, \code{\texttt{\char`\\mathord}}을 씁니다.
+
+\begin{lrbox}{\dobox}
+\begin{minipage}{.7\textwidth}
+\begin{minted}{latex}
+$X/\mathord{\sim} \times Y$ \\
+$X/{\sim} \times Y$
+\end{minted}
+\end{minipage}
+\end{lrbox}
+
+\begin{lrbox}{\dontbox}
+\begin{minipage}{.7\textwidth}
+\begin{minted}{latex}
+$X/\sim \times Y$ \\
+$X/\mathrel{\sim} \times Y$ \\
+$X/\mathbin{\sim} \times Y$
+\end{minted}
+\end{minipage}
+\end{lrbox}
+
+\dothis \usebox{\dobox}
+    ->  $X/\mathord{\sim} \times Y$ \\ $X/{\sim} \times Y$
+\but \usebox{\dontbox}
+    ->  $\mathrlap{\color{white!50!shadowcolor}X/{\sim} \times Y}{X/\sim \times Y}$ \\
+        $\mathrlap{\color{white!50!shadowcolor}X/{\sim} \times Y}{X/\mathrel{\sim} \times Y}$ \\
+        $\mathrlap{\color{white!50!shadowcolor}X/{\sim} \times Y}{X/\mathbin{\sim} \times Y}$
+\end
+
+\newpage
+
+\subsection{적분}
+
+일관적이게, 아래 중 하나를 골라 씁니다.
+
+\begin{lrbox}{\dobox}
+\begin{minipage}{.7\textwidth}
+\begin{minted}{latex}
+$\displaystyle
+    \iint\limits_{\mathbb R^2}
+    e^{-x^2-y^2} \,dx \,dy$ \\
+
+$\newcommand{\diff}{\mathop{}\!d}
+    \displaystyle
+    \iint\limits_{\mathbb R^2}
+    e^{-x^2-y^2} \diff x \diff y$
+\end{minted}
+\end{minipage}
+\end{lrbox}
+
+\begin{lrbox}{\dontbox}
+\begin{minipage}{.7\textwidth}
+\begin{minted}{latex}
+$\displaystyle
+    \iint\limits_{\mathbb R^2}
+    e^{-x^2-y^2} dx dy$ \\
+$\displaystyle
+    \iint\limits_{\mathbb R^2}
+    e^{-x^2-y^2}
+    \,\mathrm dx \,\mathrm dy$
+\end{minted}
+\end{minipage}
+\end{lrbox}
+
+\dothis \usebox{\dobox}
+    ->  $\displaystyle
+            \iint\limits_{\mathbb R^2}
+            e^{-x^2-y^2} \,dx \,dy$ \\
+
+        $\newcommand{\diff}{\mathop{}\!d}
+            \displaystyle
+            \iint\limits_{\mathbb R^2}
+            e^{-x^2-y^2} \diff x \diff y$
+\but \usebox{\dontbox}
+    ->  $\mathrlap
+            {\color{white!50!shadowcolor}
+                \displaystyle\iint\limits_{\mathbb R^2}e^{-x^2-y^2} \,dx \,dy}
+            {\displaystyle\iint\limits_{\mathbb R^2}e^{-x^2-y^2} dx dy}$ \\
+        $\mathrlap
+            {\color{white!50!shadowcolor}
+                \displaystyle\iint\limits_{\mathbb R^2}e^{-x^2-y^2} \,dx \,dy}
+            {\displaystyle\iint\limits_{\mathbb R^2}e^{-x^2-y^2} \,\mathrm dx \,\mathrm dy}$
+\end
+
+특이하게 $dx$의 $d$를 upright($\mathrm d$)하게 쓰라는 표준이 있지만 (\!\textit{Typesetting mathematics for science and technology according to ISO 31/XI}) Knuth 등 많은 사람들이 italic하게 쓰고 있으며 더 익숙하므로 후자를 따릅니다.
+
+\newpage
+
+\subsection{분수}
+
+분수 양 옆에 여백이 없다면 \code{\texttt{\char`\\,}}을 넣어줍니다.
+
+\begin{lrbox}{\dobox}
+\begin{minipage}{.7\textwidth}
+\begin{minted}{latex}
+$\dfrac 8 9 \, n \, \dfrac a b$
+\end{minted}
+\end{minipage}
+\end{lrbox}
+
+\begin{lrbox}{\dontbox}
+\begin{minipage}{.7\textwidth}
+\begin{minted}{latex}
+$\dfrac 8 9 n \dfrac a b$
+\end{minted}
+\end{minipage}
+\end{lrbox}
+
+\dothis \usebox{\dobox}
+    ->  $\dfrac 8 9 \, n \, \dfrac a b$
+\but \usebox{\dontbox}
+    ->  $\mathrlap
+            {\color{white!50!shadowcolor}\dfrac 8 9 \, n \, \dfrac a b}
+            {\dfrac 8 9  n  \dfrac a b}$
+\end
+
+\subsection{위·아래 첨자의 동시 사용}
+
+의미적으로\,{(semantically)} 둘 모두 사용하는 기호에 대해서는 \code{\texttt{\$A\_\{sub\}\char`\^\{sup\}\$}}나 \code{\texttt{\$A\char`\^\{sup\}\_\{sub\}\$}}의 형식을 씁니다.
+
+\begin{lrbox}{\dobox}
+\begin{minipage}{.7\textwidth}
+\begin{minted}{latex}
+$\displaystyle \binom n r
+    = \mathord{C}^n_r$
+\end{minted}
+\end{minipage}
+\end{lrbox}
+
+\begin{lrbox}{\dontbox}
+\begin{minipage}{.7\textwidth}
+\begin{minted}{latex}
+$\displaystyle \binom n r
+    = \mathord{C}_r^n$
+\end{minted}
+\end{minipage}
+\end{lrbox}
+
+\dothisok \usebox{\dobox}
+    ->  $\displaystyle \binom n r = \mathord{C}^n_r$
+\or \usebox{\dontbox}
+    ->  $\displaystyle \binom n r = \mathord{C}_r^n$
+\end
+
+\newpage
+
+하지만 두 첨자를 의미적으로 따로 생각할 수 있는 경우에는 \code{\texttt{\char`\\>}}를 이용하여 적당히 떨어뜨려 줄 수 있습니다. 떨어뜨리는 편이 가독성이나 이해를 높일 수 있을 때에만 사용해 주세요.
+
+\begin{lrbox}{\dobox}
+\begin{minipage}{.7\textwidth}
+\begin{minted}{latex}
+$\begin{array}{ccc}
+    a_1    & a_2    & \cdots \\
+    a_1^2  & a_2^2  & \cdots \\
+    a_1^3  & a_2^3  & \cdots \\
+    \vdots & \vdots & \ddots
+    \end{array}
+\quad \text{and} \quad
+\begin{array}{ccc}
+    f_1    & f_2    & \cdots \\
+    f_1'   & f_2'   & \cdots \\
+    f_1''  & f_2''  & \cdots \\
+    \vdots & \vdots & \ddots
+    \end{array}$
+\end{minted}
+\end{minipage}
+\end{lrbox}
+
+\begin{lrbox}{\dontbox}
+\begin{minipage}{.7\textwidth}
+\begin{minted}{latex}
+$\begin{array}{ccc}
+    a_1       &       a_2 & \cdots \\
+    a_1^{\>2} & a_2^{\>2} & \cdots \\
+    a_1^{\>3} & a_2^{\>3} & \cdots \\
+    \vdots & \vdots & \ddots
+    \end{array}
+\quad \text{and} \quad
+\begin{array}{ccc}
+    f_1            & f_2            & \cdots \\
+    f_1^{\>\prime} & f_2^{\>\prime} & \cdots \\
+    f_1^{\>\prime\prime} &
+               f_2^{\>\prime\prime} & \cdots \\
+    \vdots & \vdots & \ddots
+    \end{array}$
+\end{minted}
+\end{minipage}
+\end{lrbox}
+
+\dothisok \usebox{\dobox}
+    ->  $\begin{array}{ccc}
+            a_1    & a_2    & \cdots \\
+            a_1^2  & a_2^2  & \cdots \\
+            a_1^3  & a_2^3  & \cdots \\
+            \vdots & \vdots & \ddots
+            \end{array}
+            \quad \text{and} \quad
+            \begin{array}{ccc}
+            f_1    & f_2    & \cdots \\
+            f_1'   & f_2'   & \cdots \\
+            f_1''  & f_2''  & \cdots \\
+            \vdots & \vdots & \ddots
+            \end{array}$
+\or \usebox{\dontbox}
+    ->  {$\begin{array}{ccc}
+        a_1    & a_2    & \cdots \\
+        a_1^{\>2}  & a_2^{\>2}  & \cdots \\
+        a_1^{\>3}  & a_2^{\>3}  & \cdots \\
+        \vdots & \vdots & \ddots
+        \end{array}
+        \quad \text{and} \quad
+        \begin{array}{ccc}
+        f_1    & f_2    & \cdots \\
+        f_1^{\>\prime}   & f_2^{\>\prime}   & \cdots \\
+        f_1^{\>\prime\prime}  & f_2^{\>\prime\prime}  & \cdots \\
+        \vdots & \vdots & \ddots
+        \end{array}$}
+\end
+
+\newpage
+
+\subsection{위·아래 첨자에 대한 첨언}
+
+가끔 한 첨자가 다른 첨자의 위치를 달라지게 하는 경우가 있는데, 이때 \code{\texttt{\char`\\vphantom}} 등을 이용해서 일관성이 유지되도록 해줍니다.
+
+\begin{lrbox}{\dobox}
+\begin{minipage}{.7\textwidth}
+\begin{minted}{latex}
+$\left\{a_n^{(j)}\right\}
+    \longrightarrow
+    a_{\vphantom{n}}^{\mkern-2mu(j)}$
+\end{minted}
+\end{minipage}
+\end{lrbox}
+
+\begin{lrbox}{\dontbox}
+\begin{minipage}{.7\textwidth}
+\begin{minted}{latex}
+$\left\{a_n^{(j)}\right\}
+    \longrightarrow
+    a^{(j)}$
+\end{minted}
+\end{minipage}
+\end{lrbox}
+
+\dothis \usebox{\dobox}
+    ->  $\left\{a_n^{(j)}\right\} \longrightarrow
+    a_{\vphantom{n}}^{\mkern-2mu(j)}$
+\but \usebox{\dontbox}
+    ->  $\mathrlap
+            {\color{white!50!shadowcolor}\left\{a_n^{(j)}\right\} \longrightarrow a_{\vphantom{n}}^{\mkern-2mu(j)}}
+            {\left\{a_n^{(j)}\right\} \longrightarrow a^{(j)}}$
+\end
+
+\newpage
+
+
+\section{비슷한 문자 (Similar Characters)}
+\subsection{\code{\texttt{:}}, \code{\texttt{\char`\\colon}}}
+
+수식 모드에서 \code{\texttt{:}}는 정의상 관계 기호이며, \code{\texttt{\char`\\colon}}은 punctuation symbol입니다. \code{\texttt{:}}는 집합의 조건을 제시할 때 씁니다.
+
+\begin{lrbox}{\dobox}
+\begin{minipage}{.7\textwidth}
+\begin{minted}{latex}
+$R = \{ x : x \notin x \}$
+\end{minted}
+\end{minipage}
+\end{lrbox}
+
+\begin{lrbox}{\dontbox}
+\begin{minipage}{.7\textwidth}
+\begin{minted}{latex}
+$R = \{ x \colon x \notin x \}$ \\
+$R = \{ x {:} x \notin x \}$
+\end{minted}
+\end{minipage}
+\end{lrbox}
+
+\dothis \usebox{\dobox}
+    ->  $R = \{ x : x \notin x \}$
+\but \usebox{\dontbox}
+    ->  $\mathrlap
+            {\color{white!50!shadowcolor}R = \{ x : x \notin x \}}
+            {R = \{ x \colon x \notin x \}}$ \\
+        $\mathrlap
+            {\color{white!50!shadowcolor}R = \{ x : x \notin x \}}
+            {R = \{ x {:} x \notin x \}}$
+\end
+
+\code{\texttt{:}} 대신 \code{\texttt{\char`\\mid}}를 사용해도 됩니다. 단, 비슷한 이유로 \code{\texttt{|}}는 사용하면 안 됩니다.
+
+\code{\texttt{\char`\\colon}}은 함수의 정의역과 공역을 나타낼 때 씁니다.
+
+\begin{lrbox}{\dobox}
+\begin{minipage}{.7\textwidth}
+\begin{minted}{latex}
+$f \colon \mathbb R^m \to \mathbb R^n$
+\end{minted}
+\end{minipage}
+\end{lrbox}
+
+\begin{lrbox}{\dontbox}
+\begin{minipage}{.7\textwidth}
+\begin{minted}{latex}
+$f : \mathbb R^m \to \mathbb R^n$
+\end{minted}
+\end{minipage}
+\end{lrbox}
+
+\dothis \usebox{\dobox}
+    ->  $f \colon \mathbb R^m \to \mathbb R^n$
+\but \usebox{\dontbox}
+    ->  $\mathrlap
+            {\color{white!50!shadowcolor}f \colon \mathbb R^m \to \mathbb R^n}
+            {f : \mathbb R^m \to \mathbb R^n}$
+\end
+
+Type을 나타내는 \code{\texttt{:}}은 \code{\texttt{\char`\\mathord\{:\}}}를 사용하면 됩니다. (\code{\texttt{\$\char`\\lambda x}} \code{\texttt{\char`\\mathord\{:\} A . x\$}} $\rightsquigarrow$ $\lambda x \mathord{:} A . x$)
+
+
+\subsection{\code{\texttt{\char`\\bar}}, \code{\texttt{\char`\\overline}}}
+
+\code{\texttt{\char`\\bar}}는 다른 것을 나타낼 때에 쓰고, \code{\texttt{\char`\\overline}}은 closure나 complex conjugate 등 operation을 나타낼 때 씁니다.
+
+\begin{lrbox}{\dobox}
+\begin{minipage}{.7\textwidth}
+\begin{minted}{latex}
+There are 3 integers:
+$n$, $n'$ and $\bar n$.
+
+The following is the
+\emph{Schwarz reflection principle}:
+\[ F(\overline z) = \overline {F(z)}. \]
+\end{minted}
+\end{minipage}
+\end{lrbox}
+
+\begin{lrbox}{\dontbox}
+\begin{minipage}{.7\textwidth}
+\begin{minted}{latex}
+There are 3 integers:
+$n$, $n'$ and $\overline n$.
+
+The following is the
+\emph{Schwarz reflection principle}:
+\[ F(\bar z) = \bar {F(z)}. \]
+\end{minted}
+\end{minipage}
+\end{lrbox}
+
+\dothis \usebox{\dobox}
+    ->  There are 3 integers:
+        $n$, $n'$ and $\bar n$.
+        
+        The following is the
+        \emph{Schwarz reflection principle}:
+        \[ F(\overline z) = \overline {F(z)}. \]
+\but \usebox{\dontbox}
+    ->  There are 3 integers:
+        $n$, $n'$ and $\overline n$.
+        
+        The following is the
+        \emph{Schwarz reflection principle}:
+        \[ F(\bar z) = \bar {F(z)}. \]
+\end
+
+
+\newpage
+
+\section{개행 (New Line)}
+
+\textbs{제발 문단 끝마다 개행 문자 \code{\texttt{\char`\\\char`\\}}를 붙이지 말아주세요.} 가독성을 현저히 떨어뜨리며, 문단 파악이 잘 되지 않습니다. 또 \texttt{Underfull \char`\\hbox}를 내기도 합니다. 문단이 끝나지 않았을 때엔 개행을 하지 말고, 문단이 끝나면 개행 문자 대신 빈 줄이나 \code{\texttt{\char`\\par}}, \code{\texttt{\char`\\endgraf}}를 넣어주세요. 또, 주제가 바뀔 때에는 문단 구분을 해주세요.
+
+\begin{lrbox}{\dobox}
+\begin{minipage}{.7\textwidth}
+\begin{minted}{latex}
+짱 재미있는 이야기를 하고 있던 문단이 아쉽게도
+끝났습니다!!
+
+다음 이야기를 진행해 주세요.
+\end{minted}
+\end{minipage}
+\end{lrbox}
+
+\begin{lrbox}{\dontbox}
+\begin{minipage}{.7\textwidth}
+\begin{minted}{latex}
+짱 재미있는 이야기를 하고 있던 문단이 아쉽게도
+끝났습니다!!\\
+다음 이야기를 진행해 주세요.
+\end{minted}
+\end{minipage}
+\end{lrbox}
+
+\dothis \usebox{\dobox}
+    ->  짱 재미있는 이야기를 하고 있던 문단이 아쉽게도\\끝났습니다!!\\[6pt]
+        다음 이야기를 진행해 주세요.
+\but \usebox{\dontbox}
+    ->  짱 재미있는 이야기를 하고 있던 문단이 아쉽게도\\끝났습니다!!\\
+        다음 이야기를 진행해 주세요.
+\end
+
+\vspace{-.2in}
+\texttt{MathLetter.sty}를 사용하고 있다면, 문단을 만들 때에 \code{\texttt{\char`\\begin\{MLPar\}}} ... \\\code{\texttt{\char`\\end\{MLPar\}}}를 이용해 주세요. 단, 인접해 있는 문단은 하나의 \code{\texttt{MLPar}} 환경 안에 넣어주세요.
+
+\vspace{-.2in}
+\begin{lrbox}{\dobox}
+\begin{minipage}{.7\textwidth}
+\begin{minted}{latex}
+\begin{MLPar}
+    새 문단
+
+    새 새 문단
+\end{MLPar}
+
+\begin{MLThm}[방 정리]
+    깨끗하게 정리하세요
+\end{MLThm}
+
+\begin{MLPar}
+    방 정리를 했으면 재밌게 놀아야 합니다.
+\end{MLPar}
+\end{minted}
+\end{minipage}
+\end{lrbox}
+
+\begin{lrbox}{\dontbox}
+\begin{minipage}{.7\textwidth}
+\begin{minted}{latex}
+\begin{MLPar}
+    새 문단
+\end{MLPar}
+
+\begin{MLPar}
+    새 새 문단
+\end{MLPar}
+
+\begin{MLThm}[방 정리]
+    깨끗하게 정리하세요
+\end{MLThm}
+
+방 정리를 했으면 재밌게 놀아야 합니다.
+\end{minted}
+\end{minipage}
+\end{lrbox}
+
+\dothisnoex \usebox{\dobox}
+\but \usebox{\dontbox}
+\end
+
+
+\newpage
+
+\section{글씨체, 글씨 크기와 중요도 (Fonts, Sizes and Emphasizing)}
+
+의미있는 새로운 용어가 나왔을 때엔 \code{\texttt{\char`\\newterm\{\textit{main\_name}\}[\textit{sub\_name}]}}을 이용해 주세요.
+
+\begin{lrbox}{\dobox}
+\begin{minipage}{.7\textwidth}
+\begin{minted}{latex}
+$\mathbb E X$를 확률 변수 $X$에 대한
+    \newterm{기댓값}[expected value],
+    또는 \newterm{평균}[mean]이라고 합니다.
+\end{minted}
+\end{minipage}
+\end{lrbox}
+
+\begin{lrbox}{\dontbox}
+\begin{minipage}{.7\textwidth}
+\begin{minted}{latex}
+$\mathbb E X$를 확률 변수 $X$에 대한
+    기댓값(expected value),
+    또는 \textbf{평균} (mean)이라고 합니다.
+\end{minted}
+\end{minipage}
+\end{lrbox}
+
+\dothis \usebox{\dobox}
+    ->  $\mathbb E X$를 확률 변수 $X$에 대한 \newterm{기댓값}[expected value], 또는 \newterm{평균}[mean]이라고 합니다.
+\but \usebox{\dontbox}
+    ->  $\mathbb E X$를 확률 변수 $X$에 대한 기댓값(expected value), 또는 \textbf{평균} (mean)이라고 합니다.
+\end
+
+\vspace{-.2in}
+중요하지 않은 새로운 용어가 나왔을 때엔, 다음과 같은 형식으로 표시해 주세요.
+
+\begin{lrbox}{\dobox}
+\begin{minipage}{.7\textwidth}
+\begin{minted}{latex}
+$\mathbb E [(X-\mathbb E X)^k]$를
+$k$차 중심화 적률\,% 또는 \emph{...}
+{\small ($k$-th centralized moment)}%
+이라고 하는데, 알 필요 없습니다. 
+\end{minted}
+\end{minipage}
+\end{lrbox}
+
+\begin{lrbox}{\dontbox}
+\begin{minipage}{.7\textwidth}
+\begin{minted}{latex}
+$\mathbb E [(X-\mathbb E X)^k]$를
+\newterm{$\boldsymbol k$차 중심화 적률}%
+[$\MakeLowercase k$-th centralized moment]%
+이라고 하는데, 알 필요 없습니다. 
+\end{minted}
+\end{minipage}
+\end{lrbox}
+
+\vspace{-.2in}
+\dothis \usebox{\dobox}
+    ->  $\mathbb E [(X-\mathbb E X)^k]$를
+        $k$차 중심화 적률\,%
+        {\small ($k$-th centralized moment)}%
+        이라고 하는데, 알 필요 없습니다. 
+\but \usebox{\dontbox}
+    ->  $\mathbb E [(X-\mathbb E X)^k]$를
+        \newterm{$\boldsymbol k$차 중심화 적률}%
+        [$\MakeLowercase k$-th centralized moment]%
+        이라고 하는데, 알 필요 없습니다. 
+\end
+
+
+\newpage
+
+\section{괄호와 구분 문자 (Brackets and Delimiters)}
+
+Math mode에서 특별한 경우가 아닌 이상, \code{\texttt{\char`\\left}}와 \code{\texttt{\char`\\right}}를 이용합니다. 특별한 경우라는 것은 크게 나누어 보면 \code{\texttt{\char`\\left}}와 \code{\texttt{\char`\\right}}가 필요없을 때\,{\small(redundant)}, \code{\texttt{\char`\\left}}와 \code{\texttt{\char`\\right}}를 썼을 때 괄호가 너무 크거나 작게 나오는 경우, 또 괄호 옆의 여백이 이상해 보일 때를 말합니다.
+
+\subsection{필요없는 \code{\texttt{\char`\\left}}와 \code{\texttt{\char`\\right}}}
+
+괄호가 나타내는 묶음이 의미적으로\,{\small(semantically)} 전체를 차지하고\,{\small(위\cdottext{}아래 첨자 제외)}, 괄호 안에 특별히 세로로 큰 글자가 없는 경우, \code{\texttt{\char`\\left}}와 \code{\texttt{\char`\\right}}를 생략해도 됩니다. 조판에 차이가 없으니, 읽기 쉽게 하기 위해 생략하는 것을 추천합니다.
+
+\begin{lrbox}{\dobox}
+\begin{minipage}{.7\textwidth}
+\begin{minted}{latex}
+$(a + b)$,
+$(a + b)^2$,
+$\dfrac{(a + b + c)^2}{[x]}$
+\end{minted}
+\end{minipage}
+\end{lrbox}
+
+\begin{lrbox}{\dontbox}
+\begin{minipage}{.7\textwidth}
+\begin{minted}{latex}
+$\left( a + b \right)$,
+$\left( a + b \right)^2$,
+$\dfrac
+    {\left( a + b + c \right)^2}
+    {\left[ x \right]}$
+\end{minted}
+\end{minipage}
+\end{lrbox}
+
+\dothisok \usebox{\dobox}
+    ->  $(a+b)$, $(a+b)^2$, $\dfrac {(a+b+c)^2}{[x]}$
+\or \usebox{\dontbox}
+    ->  $\left(a+b\right)$, $\left(a+b\right)^2$, $\dfrac {\left(a+b+c\right)^2}{\left[x\right]}$
+\end
+
+\subsection{\code{\texttt{\char`\\left}}와 \code{\texttt{\char`\\right}}를 썼을 때 괄호가 너무 크거나 작게 나오는 경우}
+
+중첩된 괄호가 많을 때에, 짝을 강조하여 가독성을 높이려면 크기를 점점 키우는 것이 좋습니다. 그럴 때엔 \code{\texttt{\char`\\left}}와 \code{\texttt{\char`\\right}} 대신 \code{\texttt{\char`\\(big|Big|bigg|Bigg)}} \code{\texttt{\textit{\{l|m|r\}}}}을 사용하여 manually 조절해 주세요. (\texttt{()} 안에서 하나\,{\small(mandatory)}, \texttt{\{\}} 안에서 하나\,{\small(optional)}를 골라 쓰면 됩니다.)
+
+\begin{lrbox}{\dobox}
+\begin{minipage}{.7\textwidth}
+\begin{minted}{latex}
+$\Bigl(\left.a\right.
+    + \bigl(b + (c + d)\bigr)\Bigr)
+    = a + b + c + d$
+\end{minted}
+\end{minipage}
+\end{lrbox}
+
+\begin{lrbox}{\dontbox}
+\begin{minipage}{.7\textwidth}
+\begin{minted}{latex}
+$(a + (b + (c + d)))
+    = a + b + c + d$
+\end{minted}
+\end{minipage}
+\end{lrbox}
+
+\dothis \usebox{\dobox}
+    ->  $\Bigl(\left.a\right. + \bigl(b + (c + d)\bigr)\Bigr) = a + b + c + d$
+\but \usebox{\dontbox}
+    ->  $\mathrlap
+        {\color{white!50!shadowcolor}\Bigl(\left.a\right. + \bigl(b + (c + d)\bigr)\Bigr) = a + b + c + d}
+        {(a + (b + (c + d))) = a + b + c + d}$
+\end
+
+또한 \code{\texttt{\char`\\sum}} 등을 쓸 때에 역시 괄호가 너무 크게 나오면, 위 명령어를 이용해서 조절하면 됩니다.
+
+\subsection{괄호 옆의 여백이 이상해 보일 때}
+
+위의 예시에서 \code{\texttt{a}} 대신 \code{\texttt{\char`\\left.a\char`\\right.}}를 쓴 이유는 $a$ 양 옆의 여백을 $\bigl(b + (c + d)\bigr)$와 똑같이 하기 위해서입니다.  \code{\texttt{\char`\\bigl}} 대신 \code{\texttt{\char`\\big}}을 써서 여백을 없애거나, 위의 방법과 비슷하게 여백을 조절하면 됩니다.
+
+
+\newpage
+
+\section{행렬 (Matrices and Arrays)}
+
+\texttt{amsmath} 패키지에 정의되어 있는 행렬들은 있는 그대로 써주세요. \code{\texttt{\textit{\{p|b|v|B|V\}}matrix}}의 여섯 가지 환경이 정의되어 있습니다. 짧은 코드를 유지하면서, 불필요한 여백을 없앨 수 있습니다.
+
+\begin{lrbox}{\dobox}
+\begin{minipage}{.7\textwidth}
+\begin{minted}{latex}
+$\displaystyle
+    \begin{pmatrix}
+        a_{11} & a_{12} \\
+        a_{21} & a_{22}
+    \end{pmatrix}$
+\end{minted}
+\end{minipage}
+\end{lrbox}
+
+\begin{lrbox}{\dontbox}
+\begin{minipage}{.7\textwidth}
+\begin{minted}{latex}
+$\displaystyle
+    \left( \begin{matrix}
+        a_{11} & a_{12} \\
+        a_{21} & a_{22}
+    \end{matrix} \right)
+    \quad \text{or} \quad
+    \left( \begin{array}{cc}
+        a_{11} & a_{12} \\
+        a_{21} & a_{22}
+    \end{array} \right)$
+\end{minted}
+\end{minipage}
+\end{lrbox}
+
+\dothis \usebox{\dobox}
+    ->  $\displaystyle \begin{pmatrix} a_{11} & a_{12} \\ a_{21} & a_{22} \end{pmatrix}$
+\but \usebox{\dontbox}
+    ->  $\mathrlap
+            {\color{white!50!shadowcolor}\displaystyle \begin{pmatrix} a_{11} & a_{12} \\ a_{21} & a_{22} \end{pmatrix}}
+            {\displaystyle
+            \left( \begin{matrix}
+                a_{11} & a_{12} \\
+                a_{21} & a_{22}
+            \end{matrix} \right)}
+        \quad \text{or} \quad
+        \mathrlap
+            {\color{white!50!shadowcolor}\displaystyle \begin{pmatrix} a_{11} & a_{12} \\ a_{21} & a_{22} \end{pmatrix}}
+            {\displaystyle
+            \left( \begin{array}{cc}
+                a_{11} & a_{12} \\
+                a_{21} & a_{22}
+            \end{array} \right)}$
+\end
+
+정의되지 않은 행렬 환경의 경우에는, 모든 entry가 가운데 정렬일 때에는 \texttt{matrix} 환경을 써주세요. 왼쪽이나 오른쪽 정렬, 소숫점 기준 정렬이 필요할 때엔 \texttt{array}를 쓰되, 정렬 선언부 앞뒤에 \code{\texttt{@\{\}}}을 붙여주세요.
+
+\begin{lrbox}{\dobox}
+\begin{minipage}{.7\textwidth}
+\begin{minted}{latex}
+% \usepackage{scalerel} % in preamble
+$\displaystyle \begingroup
+    \def\content{
+        \begin{array}{@{}rl@{}}
+            \text{right} & \text{\tau} \\
+            \text{aligned} &
+                   \text{\epsilon\chi}
+        \end{array}
+    }
+    \left\langle
+        \content
+    \scalerel*{\dagger}{\content}
+    \right. \endgroup$
+\end{minted}
+\end{minipage}
+\end{lrbox}
+
+\begin{lrbox}{\dontbox}
+\begin{minipage}{.7\textwidth}
+\begin{minted}{latex}
+$\displaystyle
+    \left\langle
+        \begin{array}{rl}
+            \text{right} & \text{\tau} \\
+            \text{aligned} &
+                   \text{\epsilon\chi}
+        \end{array}
+    \right.\dagger$
+\end{minted}
+\end{minipage}
+\end{lrbox}
+
+\dothis \usebox{\dobox}
+    ->  $\displaystyle \begingroup
+            \def\content{
+                \begin{array}{@{}rl@{}}
+                    \text{right} & \text{\tau} \\
+                    \text{aligned} &
+                        \text{\epsilon\chi}
+                \end{array}
+            }
+            \left\langle
+                \content
+            \scalerel*{\dagger}{\content}
+            \right. \endgroup$
+\but \usebox{\dontbox}
+    ->  $\mathrlap
+            {\color{white!50!shadowcolor}\displaystyle \begingroup
+                \def\content{
+                    \begin{array}{@{}rl@{}}
+                        \text{right} & \text{\tau} \\
+                        \text{aligned} &
+                            \text{\epsilon\chi}
+                    \end{array}
+                }
+                \left\langle
+                    \content
+                \scalerel*{\dagger}{\content}
+                \right. \endgroup}
+            {\displaystyle
+                \left\langle
+                    \begin{array}{rl}
+                        \text{right} & \text{\tau} \\
+                        \text{aligned} &
+                            \text{\epsilon\chi}
+                    \end{array}
+                \right.\dagger}$
+\end
+
+행렬의 행간/열간 간격을 조정해야 할 수도 있습니다. (예시 생략)
+
+
+\end{document}
