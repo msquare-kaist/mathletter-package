@@ -293,11 +293,8 @@
 }
 \makeatother
 
-% PAGE STYLE
+% PROBLEM STYLING
 %%%%%
-\newcounter{issue}
-\pagestyle{fancy}
-\fancyhf{}
 \ifproblem
     \title{MLprob}
     \author{고봉균}
@@ -321,25 +318,31 @@
     \def\emph#1{{\sffamily\bfseries #1}}
     \def\emphc#1{{\Color{\emphcolor}\emph{#1}\ColorN}}
     \def\emphcolor#1{\Color{\emphcolor}} \def\endemphcolor{\CN}
-    \makeatletter
-    \def\oddtitle{\@title}
-    \def\eventitle{\@title}
-    \def\markboth#1#2{%
-        \setlength{\itemsep}{0pt}%
-        \setlength{\abovedisplayskip}{7pt}%
-        \setlength{\belowdisplayskip}{7pt}%
-        \iffontsetting\setfont\fi%
-        \def\Category{Problems}%
-        \def\eventitle{#1}%
-        \def\oddtitle{#2}%
-    }
-    \let\settitle=\markboth
-    \fancyfoot[RO]{\hfil\footnotesize{\sffamily\Category\,/\,\oddtitle}\hskip.5em$\bullet$\hskip.5em{\itshape\theissue--\thepage}}
-    \fancyfoot[LE]{\footnotesize{\itshape\theissue--\thepage}\hskip.5em$\bullet$\hskip.5em{\sffamily\eventitle\,/\,\Category}\hfil}
-    \renewcommand{\headrulewidth}{0pt}
-    \renewcommand{\footrulewidth}{0pt}
-    \makeatother
 \fi
+
+% PAGE STYLE
+%%%%%
+\newcounter{issue}
+\pagestyle{fancy}
+\fancyhf{}
+\makeatletter
+\def\oddtitle{\@title}
+\def\eventitle{\@title}
+\def\markboth#1#2{%
+    \setlength{\itemsep}{0pt}%
+    \setlength{\abovedisplayskip}{7pt}%
+    \setlength{\belowdisplayskip}{7pt}%
+    \iffontsetting\setfont\fi%
+    \def\Category{Problems}%
+    \def\eventitle{#1}%
+    \def\oddtitle{#2}%
+}
+\let\settitle=\markboth
+\fancyfoot[RO]{\hfil\footnotesize{\sffamily\Category\,/\,\oddtitle}\hskip.5em$\bullet$\hskip.5em{\itshape\theissue--\thepage}}
+\fancyfoot[LE]{\footnotesize{\itshape\theissue--\thepage}\hskip.5em$\bullet$\hskip.5em{\sffamily\eventitle\,/\,\Category}\hfil}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\makeatother
 
 % FONT
 %%%%%
