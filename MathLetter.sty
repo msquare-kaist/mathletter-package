@@ -7,6 +7,11 @@
 \DeclareOption{color}{
     \colorsupporttrue
 }
+\newif\ifproblem
+\problemfalse
+\DeclareOption{problem}{
+    \problemtrue
+}
 \ProcessOptions\relax
 
 % IMPORT PACKAGE
@@ -293,23 +298,48 @@
 \newcounter{issue}
 \pagestyle{fancy}
 \fancyhf{}
-\makeatletter
-\def\oddtitle{\@title}
-\def\eventitle{\@title}
-\def\settitle#1#2{%
-    \setlength{\itemsep}{0pt}%
-    \setlength{\abovedisplayskip}{7pt}%
-    \setlength{\belowdisplayskip}{7pt}%
-    \iffontsetting\setfont\fi%
-    \def\Category{Problems}%
-    \def\eventitle{#1}%
-    \def\oddtitle{#2}%
-}
-\fancyfoot[RO]{\hfil\footnotesize{\sffamily\Category\,/\,\oddtitle}\hskip.5em$\bullet$\hskip.5em{\itshape\theissue--\thepage}}
-\fancyfoot[LE]{\footnotesize{\itshape\theissue--\thepage}\hskip.5em$\bullet$\hskip.5em{\sffamily\eventitle\,/\,\Category}\hfil}
-\renewcommand{\headrulewidth}{0pt}
-\renewcommand{\footrulewidth}{0pt}
-\makeatother
+\ifproblem
+    \title{MLprob}
+    \author{고봉균}
+    \def\mod{\bmod}
+    \def\D{\displaystyle}
+    \def\cir#1{\hbox{\hbox to 1em{\hss\small#1\hss}\hskip-1em$\bigcirc$}}
+    \def\R#1{\rule{0pt}{#1mm}}
+    \def\nemo#1#2{\raisebox{-.3ex}{\frame{\rule[-.6ex]{0pt}{2.4ex}\hbox to #1{\hss #2\hss}}}}%
+    \def\tf{\mbox{$\therefore$}\hskip.5em}
+    \def\bc{\mbox{$\because$}\hskip.5em}
+    \def\lcm{\mbox{lcm}}
+    \def\({\left(}
+    \def\){\right)}
+    \def\[{\left[}
+    \def\]{\right]}
+    \def\N{\mbox{$\mathbf N$}}
+    \def\Z{\mbox{$\mathbf Z$}}
+    \def\Q{\mbox{$\mathbf Q$}}
+    \def\R{\mbox{$\mathbf R$}}
+    \def\C{\mbox{$\mathbf C$}}
+    \def\emph#1{{\sffamily\bfseries #1}}
+    \def\emphc#1{{\Color{\emphcolor}\emph{#1}\ColorN}}
+    \def\emphcolor#1{\Color{\emphcolor}} \def\endemphcolor{\CN}
+    \makeatletter
+    \def\oddtitle{\@title}
+    \def\eventitle{\@title}
+    \def\markboth#1#2{%
+        \setlength{\itemsep}{0pt}%
+        \setlength{\abovedisplayskip}{7pt}%
+        \setlength{\belowdisplayskip}{7pt}%
+        \iffontsetting\setfont\fi%
+        \def\Category{Problems}%
+        \def\eventitle{#1}%
+        \def\oddtitle{#2}%
+    }
+    \let\settitle=\markboth
+    \fancyfoot[RO]{\hfil\footnotesize{\sffamily\Category\,/\,\oddtitle}\hskip.5em$\bullet$\hskip.5em{\itshape\theissue--\thepage}}
+    \fancyfoot[LE]{\footnotesize{\itshape\theissue--\thepage}\hskip.5em$\bullet$\hskip.5em{\sffamily\eventitle\,/\,\Category}\hfil}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \makeatother
+\fi
 
 % FONT
 %%%%%
