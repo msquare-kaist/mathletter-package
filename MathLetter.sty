@@ -31,8 +31,15 @@
     \RequirePackage[gray]{xcolor}
 \fi
 \ifinvertcolor
-    \pagecolor[rgb]{0,0,0}
-    \color[rgb]{1,1,1}
+    \pagecolor{black}
+    \color{white}
+    \colorlet{backgroundcolor}{black}
+    \colorlet{currentcolor}{white}
+\else
+    \pagecolor{white}
+    \color{black}
+    \colorlet{backgroundcolor}{white}
+    \colorlet{currentcolor}{black}
 \fi
 \RequirePackage{setspace}
 \RequirePackage{keyval}
