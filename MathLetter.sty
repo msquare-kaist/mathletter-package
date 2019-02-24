@@ -7,6 +7,11 @@
 \DeclareOption{color}{
     \colorsupporttrue
 }
+\newif\ifinvertcolor
+\invertcolorfalse
+\DeclareOption{invert}{
+    \invertcolortrue
+}
 \newif\ifproblem
 \problemfalse
 \DeclareOption{problem}{
@@ -25,9 +30,12 @@
 \else
     \RequirePackage[gray]{xcolor}
 \fi
+\ifinvertcolor
+    \pagecolor[rgb]{0,0,0}
+    \color[rgb]{1,1,1}
+\fi
 \RequirePackage{setspace}
 \RequirePackage{keyval}
-\RequirePackage{environ}
 \RequirePackage[most]{tcolorbox}
 \tcbuselibrary{breakable}
 \RequirePackage{fancyhdr}
@@ -393,10 +401,12 @@
 
 % Paragraph environment
 \newenvironment{MLPar}{%
+    \colorlet{currentcolor}{.}%
     \begin{tcolorbox}[%
         breakable,%
-        colback=white,%
-        colframe=white,%
+        colback=transparent,%
+        colframe=transparent,%
+        coltext=currentcolor,%
         boxrule=0pt,%
         width=\textwidth,%
         boxsep=0pt,%
@@ -405,7 +415,7 @@
         top=0pt,%
         bottom=0pt,%
     ]%
-        \parskip=0.7em
+        \parskip=0.7em%
 }{%
     \end{tcolorbox}%
     \ShowFootnotes%
@@ -414,6 +424,7 @@
 
 % Quotation environment
 \newcommand{\QuotePic}{%
+    \colorlet{currentcolor}{.}%
     \begin{tikzpicture}[y=0.80pt, x=0.80pt, yscale=-0.3, xscale=0.3, inner sep=0pt, outer sep=0pt]
         \begin{scope}[shift={(0,-213.715)}]
             \begin{scope}[cm={{2.38517,0.0,0.0,2.38517,(-55.0592,135.90103)}}]
@@ -440,12 +451,14 @@
     \end{tikzpicture}%
 }
 \newenvironment{MLQuo}[1][]{%
+    \colorlet{currentcolor}{.}%
     \def\myenvnow{인용}%
     \def\QuoParam{#1}
     \begin{tcolorbox}[%
         breakable,%
-        colback=white,%
-        colframe=white,%
+        colback=transparent,%
+        colframe=transparent,%
+        coltext=currentcolor,%
         boxrule=0pt,%
         width=\textwidth,%
         boxsep=0pt,%
@@ -457,8 +470,9 @@
         \hspace{0.37cm}\QuotePic
         \begin{tcolorbox}[%
             breakable,%
-            colback=white,%
-            colframe=white,%
+            colback=transparent,%
+            colframe=transparent,%
+            coltext=currentcolor,%
             boxrule=0pt,%
             width=\dimexpr\textwidth - 3.5cm\relax,%
             enlarge left by=1.75cm,%
@@ -495,12 +509,14 @@
 % Definition-like environment
 \makeatletter
 \newenvironment{MLD@f}[1][]{%
+    \colorlet{currentcolor}{.}%
     \vspace*{\dimexpr-\baselineskip + 10pt}
     \setkeys{MLEnvKeys}{nonumbering=true,env=정의,title={},#1}%
     \vskip5.4mm
     \begin{tcolorbox}[%
         breakable,%
-        colback=white,%
+        colback=transparent,%
+        coltext=currentcolor,%
         colframe=BorderGray,%
         boxrule=.6pt,%
         bottomrule=-1pt,
@@ -518,7 +534,9 @@
     \vskip-13.6mm
     \begin{tcolorbox}[%
         enhanced jigsaw,%
-        colback=white,%
+        colback=transparent,%
+        colframe=transparent,%
+        coltext=currentcolor,%
         colframe=BorderGray,%
         boxrule=.6pt,%
         boxsep=1.5mm,%
@@ -538,7 +556,9 @@
     \begin{tcolorbox}[%
         enhanced,%
         breakable,%
-        colback=white,%
+        colback=transparent,%
+        colframe=transparent,%
+        coltext=currentcolor,%
         colframe=BorderGray,%
         boxrule=.6pt,%
         toprule=-2pt,
@@ -593,6 +613,7 @@
 \makeatother
 % Theorem-like environment
 \newenvironment{MLTLE}[1][]{%
+    \colorlet{currentcolor}{.}%
     \vspace*{\dimexpr-\baselineskip + 10pt}
     \setkeys{MLEnvKeys}{nonumbering=true,env=분류없음,title={},#1}%
     \hbox{\color{BasicGray}\rule{\dimexpr\textwidth}{3pt}}%
@@ -603,8 +624,9 @@
     \vskip1mm%
     \begin{tcolorbox}[%
         breakable,%
-        colback=white,%
-        colframe=white,%
+        colback=transparent,%
+        colframe=transparent,%
+        coltext=currentcolor,%
         boxrule=0pt,%
         width=\dimexpr\textwidth - 4mm\relax,%
         enlarge left by=2mm,%
@@ -718,10 +740,12 @@
 }%
 % Proof environment
 \newenvironment{MLPrf}[1][증명]{%
+    \colorlet{currentcolor}{.}%
     \begin{tcolorbox}[%
         breakable,%
-        colback=white,%
-        colframe=white,%
+        colback=transparent,%
+        colframe=transparent,%
+        coltext=currentcolor,%
         boxrule=0pt,%
         width=\dimexpr\textwidth - 8mm\relax,%
         enlarge left by=6mm,%
@@ -874,10 +898,10 @@
 \def\ML{{\sc MathLetter}}
 \makeatletter
 \newlength{\raising}
-\newcommand{\MSquare}[1][1]{\setlength{\raising}{-1pt*\ratio{\f@size pt}{5.5pt}}\edef\xscaleFactor{(0.026 * \f@size)}\edef\yscaleFactor{(-1 * \xscaleFactor)}%
+\newcommand{\MSquare}[1][1]{\colorlet{currentcolor}{.}\setlength{\raising}{-1pt*\ratio{\f@size pt}{5.5pt}}\edef\xscaleFactor{(0.026 * \f@size)}\edef\yscaleFactor{(-1 * \xscaleFactor)}%
 \raisebox{\raising}{\begin{tikzpicture}[y=0.80pt, x=0.80pt, yscale=\yscaleFactor, xscale=\xscaleFactor, inner sep=0pt, outer sep=0pt]
 \begin{scope}[shift={(0,-229.26665)},xscale=#1,yscale=#1]
-\path[line width=0.065pt,fill=black] (60.5716,281.9345) -- (61.5507,279.9761) .. controls
+\path[line width=0.065pt,fill=currentcolor] (60.5716,281.9345) -- (61.5507,279.9761) .. controls
 (62.2579,278.6162) and (62.9515,277.1474) .. (63.6315,275.5699) .. controls
 (64.3114,273.9923) and (65.0458,272.1972) .. (65.8346,270.1845) .. controls
 (66.6233,268.1717) and (67.2353,266.6758) .. (67.6705,265.6966) .. controls
