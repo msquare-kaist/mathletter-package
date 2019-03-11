@@ -303,6 +303,8 @@
     }%
     \linestretchwide%
     \setlength\parskip{1ex plus 0.5ex minus 0.2ex}%
+    \setlength{\abovedisplayskip}{1.3ex plus 0.5ex minus 0.2ex}%
+    \setlength{\belowdisplayskip}{1.3ex plus 0.5ex minus 0.2ex}%
     %
     \bigggskip
 }
@@ -343,6 +345,7 @@
 \makeatletter
 \def\oddtitle{\@title}
 \def\eventitle{\@title}
+
 \def\markboth#1#2{%
     \setlength{\itemsep}{0pt}%
     \setlength{\abovedisplayskip}{7pt}%
@@ -376,7 +379,7 @@
             Use another engine, such as XeLaTeX or LuaLaTeX.
         }
     \fi
-    \setsansfont{Noto Sans CJK KR}[Scale=0.90]
+    \setsansfont{Noto Sans CJK KR}[Scale=0.90,ItalicFont={*},ItalicFeatures={FakeSlant=.167}]
     \setmainhangulfont{Noto Serif CJK KR}
     \setmainhangulfont
         [ItalicFont={*},ItalicFeatures={FakeSlant=.167}]
@@ -422,7 +425,7 @@
         top=0pt,%
         bottom=0pt,%
     ]%
-        \parskip=0.7em%
+    \parskip=0.7em%
 }{%
     \end{tcolorbox}%
     \ShowFootnotes%
@@ -772,8 +775,8 @@
             sharp corners,%
         ]%
             \small\color{white}\textbs{#1}%
-        \end{tcolorbox}}
-        \parskip=0.7em
+        \end{tcolorbox}}%
+        \parskip=0.7em%
 }{%
     \hfill$\square$%
     \end{tcolorbox}%
@@ -887,6 +890,7 @@
 
 % FOOTNOTES
 %%%%%
+\newcounter{FootnoteAcc}
 \newcounter{FootnoteLength}
 \newcounter{FootnoteIterator}
 \def\Footnote#1{%
@@ -896,7 +900,7 @@
 }
 \def\ShowFootnotes{%
     \stepcounter{FootnoteLength}%
-    \forloop{FootnoteIterator}{1}{\value{FootnoteIterator} < \value{FootnoteLength}}{\footnotetext{\csname MLFootnote\arabic{FootnoteIterator}\endcsname}}%
+    \forloop{FootnoteIterator}{1}{\value{FootnoteIterator} < \value{FootnoteLength}}{\stepcounter{FootnoteAcc}\setcounter{footnote}{\value{FootnoteAcc}}\footnotetext{\csname MLFootnote\arabic{FootnoteIterator}\endcsname}}%
     \setcounter{FootnoteLength}{0}%
 }
 
