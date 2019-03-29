@@ -750,6 +750,7 @@
 }%
 % Proof environment
 \newenvironment{MLPrf}[1][증명]{%
+    \gdef\nowqed{}
     \colorlet{currentcolor}{.}%
     \begin{tcolorbox}[%
         breakable,%
@@ -778,7 +779,11 @@
         \end{tcolorbox}}%
         \ \parskip=0.7em%
 }{%
+    \ifx\nowqed\empty
     \hfill$\square$%
+    \else
+    \relax%
+    \fi%
     \end{tcolorbox}%
     \vskip2mm
     \ShowFootnotes%
@@ -903,6 +908,11 @@
     \forloop{FootnoteIterator}{1}{\value{FootnoteIterator} < \value{FootnoteLength}}{\stepcounter{FootnoteAcc}\setcounter{footnote}{\value{FootnoteAcc}}\footnotetext{\csname MLFootnote\arabic{FootnoteIterator}\endcsname}}%
     \setcounter{FootnoteLength}{0}%
 }
+
+% QEDHERE
+%%%%%
+\def\QedHere{\tag*{$\square$}\NoQed}
+\def\NoQed{\gdef\nowqed{no}}
 
 % MISC
 %%%%%
