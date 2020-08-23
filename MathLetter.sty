@@ -52,7 +52,7 @@
 \RequirePackage{titlesec}
 \RequirePackage{iftex}
 \ifXeTeX
-    \RequirePackage{ulem}
+    \RequirePackage[normalem]{ulem}
 \fi
 \usepackage[backend=bibtex,block=ragged,style=numeric]{biblatex}
 
@@ -1032,3 +1032,4 @@
 
 \def\thesection{\arabic{section}}
 \def\thesubsection{\thesection.\arabic{subsection}}
+
